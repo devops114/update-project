@@ -1,0 +1,34 @@
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const typeRoutes = require('./routes/typeModel');
+
+dotenv.config();
+connectDB();
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+app.use('/api/type-model', typeRoutes);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+const mongoose = require('mongoose');
+
+// Local MongoDB connection URI
+const mongoURI = "mongodb://localhost:27017/testdb";
+
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log("Connected to MongoDB");
+}).catch((err) => {
+    console.error("Error connecting to MongoDB:", err.message);
+});
+
